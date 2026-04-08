@@ -23,7 +23,7 @@ const sendOTPVerificationEmail = async (to, otp, userName) => {
     html,
     attachments: [{
       filename: 'logo.png',
-      path: path.join(__dirname, '../assest/images/logo.png'),
+      path: path.join(__dirname, '../assets/images/logo.png'),
       cid: 'logo'
     }]
   });
@@ -43,7 +43,7 @@ const sendWelcomeEmail = async (to, userName, email, loginUrl) => {
     html,
     attachments: [{
       filename: 'logo.png',
-      path: path.join(__dirname, '../assest/images/logo.png'),
+      path: path.join(__dirname, '../assets/images/logo.png'),
       cid: 'logo'
     }]
   });
@@ -63,7 +63,7 @@ const sendPasswordResetEmail = async (to, otp, userName) => {
     html,
     attachments: [{
       filename: 'logo.png',
-      path: path.join(__dirname, '../assest/images/logo.png'),
+      path: path.join(__dirname, '../assets/images/logo.png'),
       cid: 'logo'
     }]
   });
