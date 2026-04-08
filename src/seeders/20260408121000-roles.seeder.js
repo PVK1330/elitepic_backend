@@ -6,10 +6,10 @@ module.exports = {
   async up(queryInterface) {
     const now = new Date();
     await queryInterface.bulkInsert("roles", [
-      { id: require("uuid").v4(), name: ROLE.ADMIN, createdAt: now, updatedAt: now },
-      { id: require("uuid").v4(), name: ROLE.CASEWORKER, createdAt: now, updatedAt: now },
-      { id: require("uuid").v4(), name: ROLE.CANDIDATE, createdAt: now, updatedAt: now },
-      { id: require("uuid").v4(), name: ROLE.SPONSOR, createdAt: now, updatedAt: now }
+      { id: 1, name: ROLE.ADMIN, created_at: now, updated_at: now },
+      { id: 2, name: ROLE.CASEWORKER, created_at: now, updated_at: now },
+      { id: 3, name: ROLE.CANDIDATE, created_at: now, updated_at: now },
+      { id: 4, name: ROLE.SPONSOR, created_at: now, updated_at: now }
     ]);
   },
 

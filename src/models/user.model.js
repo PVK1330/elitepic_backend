@@ -6,8 +6,13 @@ const bcrypt = require('bcrypt');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-      // TODO: Add associations when other models are created
-      // Role - will be added when Role model exists
+      // Role
+      User.belongsTo(models.Role, {
+        foreignKey: 'role_id',
+        as: 'role',
+      });
+
+      // TODO: Add other associations when models are created
       // Sponsor - will be added when Sponsor model exists
       // Self reference (audit) - will be added when needed
       // Cases assigned - will be added when Case model exists
@@ -22,9 +27,9 @@ module.exports = (sequelize, DataTypes) => {
   User.init(
     {
       id: {
-        type: DataTypes.UUID,
-        defaultValue: sequelize.literal('gen_random_uuid()'),
+        type: DataTypes.INTEGER,
         primaryKey: true,
+        autoIncrement: true,
       },
 
       // Basic Info
@@ -62,7 +67,7 @@ module.exports = (sequelize, DataTypes) => {
 
       // RBAC
       role_id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
       },
 
       // Profile
@@ -87,7 +92,7 @@ module.exports = (sequelize, DataTypes) => {
 
       // Multi-tenant
       sponsor_id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
       },
 
       // Security
@@ -123,10 +128,10 @@ module.exports = (sequelize, DataTypes) => {
 
       // Audit
       created_by: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
       },
       updated_by: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
       },
 
       // Soft delete

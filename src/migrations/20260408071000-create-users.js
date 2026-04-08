@@ -1,14 +1,8 @@
 'use strict';
 
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    // Enable UUID extension (Postgres)
-    await queryInterface.sequelize.query(
-      'CREATE EXTENSION IF NOT EXISTS "pgcrypto";'
-    );
-
-    // Create ENUM
+    // Create ENUM for status
     await queryInterface.sequelize.query(
       `DO $$ BEGIN
         CREATE TYPE "enum_users_status" AS ENUM ('active', 'inactive', 'suspended');
@@ -17,15 +11,12 @@ module.exports = {
       END $$;`
     );
 
-    // Create Table
     await queryInterface.createTable('users', {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.literal('gen_random_uuid()'),
+        type: Sequelize.INTEGER,
         primaryKey: true,
+        autoIncrement: true,
       },
-
-      // Basic Info
       first_name: {
         type: Sequelize.STRING(100),
         allowNull: false,
@@ -44,8 +35,6 @@ module.exports = {
       mobile: {
         type: Sequelize.STRING(20),
       },
-
-      // Auth
       password: {
         type: Sequelize.TEXT,
         allowNull: false,
@@ -54,10 +43,8 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },
-
-      // RBAC
       role_id: {
-        type: Sequelize.UUID,
+        type: Sequelize.INTEGER,
         references: {
           model: 'roles',
           key: 'id',
@@ -65,8 +52,6 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
       },
-
-      // Profile
       dob: {
         type: Sequelize.DATE,
       },
@@ -85,19 +70,9 @@ module.exports = {
       profile_image: {
         type: Sequelize.TEXT,
       },
-
-      // Multi-tenant
       sponsor_id: {
-        type: Sequelize.UUID,
-        references: {
-          model: 'sponsors',
-          key: 'id',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
+        type: Sequelize.INTEGER,
       },
-
-      // Security
       last_login: {
         type: Sequelize.DATE,
       },
@@ -109,14 +84,10 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },
-
-      // Status
       status: {
         type: Sequelize.ENUM('active', 'inactive', 'suspended'),
         defaultValue: 'active',
       },
-
-      // OTP
       otp_code: {
         type: Sequelize.STRING(10),
       },
@@ -127,10 +98,8 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },
-
-      // Audit
       created_by: {
-        type: Sequelize.UUID,
+        type: Sequelize.INTEGER,
         references: {
           model: 'users',
           key: 'id',
@@ -138,15 +107,13 @@ module.exports = {
         onDelete: 'SET NULL',
       },
       updated_by: {
-        type: Sequelize.UUID,
+        type: Sequelize.INTEGER,
         references: {
           model: 'users',
           key: 'id',
         },
         onDelete: 'SET NULL',
       },
-
-      // Timestamps
       created_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
@@ -160,7 +127,7 @@ module.exports = {
       },
     });
 
-    // Indexes
+    // Add indexes
     await queryInterface.addIndex('users', ['email']);
     await queryInterface.addIndex('users', ['role_id']);
     await queryInterface.addIndex('users', ['sponsor_id']);
